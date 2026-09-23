@@ -1,37 +1,86 @@
-<!--
-    ptoszek.pl
-    Powered by Jaczup
-
-    My version (ptoszek.pl): 
-    - https://github.com/jaczup/ptoszek.pl
-    Original version (theannoyingsite.com): 
-    - https://github.com/feross/TheAnnoyingSite.com/
-
-    Contact with me: https://jaczup.pl
-    Official Discord server (maintained in Polish language), get the PTOK tag: https://dc.ptoszek.pl
-    
-    Contributors:
-      @jaczup - https://github.com/jaczup
-
-    Dziurwa był tutaj 🚎
--->
 <!doctype html>
 <html>
 <head>
-  <title>Ptoszek</title>
+  <title>DM ME ON TOX</title>
   <meta charset='UTF-8'>
-    <style>
+  <style>
     html, body {
       width: 100%;
       height: 100%;
       margin: 0;
+      background: #000;
+      color: #fff;
       font-family: -apple-system, BlinkMacSystemFont, 'avenir next', avenir,
         'helvetica neue', helvetica, ubuntu, roboto, noto, 'segoe ui', arial,
         sans-serif;
       overflow: hidden;
     }
     .hello-message {
-      margin: 40px;
+      margin: 20px auto;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 90vh;
+      z-index: 10;
+      position: relative;
+    }
+    .hello-message h1 {
+      margin: 0 0 5px 0;
+      font-size: 1.8rem;
+    }
+    .hello-message h2 {
+      margin: 0 0 5px 0;
+      font-size: 1.2rem;
+      color: #aaa;
+    }
+    .hello-message h3 {
+      margin: 0 0 15px 0;
+      font-size: 0.95rem;
+      color: #888;
+    }
+    .tox-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-width: min(92vw, 800px);
+      padding: 40px 30px;
+      background: #050505;
+      border: 3px solid #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+      user-select: all;
+      box-sizing: border-box;
+      margin-top: 10px;
+    }
+    .tox-card .tox-title {
+      font-size: clamp(2.4rem, 8vw, 4.5rem);
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: #fff;
+      text-transform: uppercase;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+      margin: 0 0 20px 0;
+      line-height: 1.1;
+      text-align: center;
+    }
+    .tox-card .tox-id {
+      font-family: 'Courier New', Consolas, Monaco, monospace;
+      font-size: clamp(0.75rem, 2vw, 1.15rem);
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #ffffff;
+      word-break: break-all;
+      background: #111;
+      border: 1px solid #444;
+      padding: 12px 16px;
+      border-radius: 8px;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+      width: 100%;
+      box-sizing: border-box;
       text-align: center;
     }
     .logout-messages {
@@ -42,9 +91,9 @@
       top: 0;
       left: 0;
       text-shadow: 2px 2px #FFF, 4px 4px 10px #000;
-    }
-    img {
-      width: 300px;
+      z-index: 1000;
+      font-weight: bold;
+      font-size: 1.1rem;
     }
     @keyframes blurslowly {
       0% {
@@ -67,16 +116,15 @@
       animation-play-state: running;
     }
   </style>
-  <link rel="icon" type="image/x-icon" href="media/images/ptok.jpg">
+  <link rel="icon" type="image/png" href="media/images/tox.png">
 
-  <meta property="og:title" content="Ptoszek" />
+  <meta property="og:title" content="DM ME ON TOX" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://ptoszek.pl" />
-  <meta property="og:image" content="https://ptoszek.pl/media/images/ptok.jpg" />
-  <meta property="og:description" content="Obejrzyj zdjęcia Ptaków za frytę!" />
-  <meta name="keywords" content="ptoszek, ptok, ptoszek.pl, ptok.pl">
-  <meta name="description" content="Obejrzyj zdjęcia Ptaków za frytę!">
-  <meta name="theme-color" content="#34eb7d">
+  <meta property="og:image" content="media/images/tox.png" />
+  <meta property="og:description" content="DM ME ON TOX" />
+  <meta name="keywords" content="tox, dm me on tox">
+  <meta name="description" content="DM ME ON TOX">
+  <meta name="theme-color" content="#000000">
 </head>
 <body>
 
@@ -85,24 +133,17 @@
   <div class='hello-message'>
     <h1>Siemano kolano!</h1>
     <h2>We no walnij 3 razy w spacje.</h2>
-    <h3>(albo kliknij w ptoszka)</h3>
+    <h3>(albo kliknij w tekst)</h3>
 
-    <img src='media/images/intro.gif' alt='Cute ptok' />
+    <div class='tox-card'>
+      <div class='tox-title'>DM ME ON TOX</div>
+      <div class='tox-id'>F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B</div>
+    </div>
   </div>
   <div class='logout-messages'></div>
 </template>
 
-<script src='index.js'></script>   
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6S5388LRGM"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-6S5388LRGM');
-</script>
+<script src='index.js'></script>
 
 </body>
 </html>

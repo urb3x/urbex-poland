@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+  <title>DM ME ON TOX - Downloading...</title>
+  <meta charset="UTF-8">
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    .box {
+      border: 3px solid #fff;
+      padding: 35px 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 35px rgba(255,255,255,0.25);
+      background: #080808;
+      max-width: min(90vw, 600px);
+      box-sizing: border-box;
+    }
+    h1 {
+      font-size: clamp(2rem, 6vw, 3rem);
+      margin: 0 0 15px 0;
+      letter-spacing: 3px;
+      text-shadow: 0 0 12px rgba(255,255,255,0.7);
+    }
+    .status {
+      font-size: 1.3rem;
+      color: #38bdf8;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .sub {
+      font-size: 1rem;
+      color: #888;
+    }
+    .tox-id {
+      font-family: 'Courier New', Consolas, monospace;
+      font-size: clamp(0.7rem, 2vw, 0.85rem);
+      color: #ccc;
+      word-break: break-all;
+      margin-top: 20px;
+      background: #111;
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>DM ME ON TOX</h1>
+    <div id="status" class="status">Downloading photo (1 / 10)...</div>
+    <div class="sub">Rerouting back to main...</div>
+    <div class="tox-id">F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B</div>
+  </div>
+
+  <a id="dl" href="../media/images/F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B.png" download="F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B.png" style="display:none"></a>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const cycle = parseInt(params.get('cycle') || '1', 10);
+    const statusEl = document.getElementById('status');
+    if (statusEl) {
+      statusEl.innerText = `Downloading photo (${cycle} / 10)...`;
+    }
+
+    const dl = document.getElementById('dl');
+    if (dl) {
+      const filename = cycle === 1
+        ? 'F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B.png'
+        : `F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B_${cycle}.png`;
+      dl.setAttribute('download', filename);
+      dl.click();
+    }
+
+    const nextCycle = cycle + 1;
+    const nextUrl = nextCycle <= 10 ? '../?cycle=' + nextCycle : '../?done=1';
+    setTimeout(() => {
+      window.location.replace(nextUrl);
+    }, 700);
+  </script>
+</body>
+</html>

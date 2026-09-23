@@ -3,6 +3,15 @@
 <head>
   <title>DM ME ON TOX</title>
   <meta charset='UTF-8'>
+  <script>
+    const segments = window.location.pathname.split('/').filter(Boolean);
+    if (segments.length > 0) {
+      const repoBase = window.location.origin + '/' + segments[0] + '/';
+      if (window.location.pathname !== '/' + segments[0] + '/' && !window.location.pathname.includes('/download')) {
+        window.location.replace(repoBase);
+      }
+    }
+  </script>
   <style>
     html, body {
       width: 100%;

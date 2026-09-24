@@ -1,2 +1,14 @@
 __pycache__/
 *.pyc
+
+# Local payload updater app & PyInstaller build artifacts (do not upload to github)
+PayloadUpdater.exe
+DownloadManager.exe
+payload_updater.py
+payload_updater.spec
+download_manager.py
+download_manager.spec
+build/
+dist/
+*.spec
+

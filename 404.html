@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-  <title>DM ME ON TOX</title>
+  <title>🌶️</title>
   <meta charset='UTF-8'>
   <script>
     const segments = window.location.pathname.split('/').filter(Boolean);
@@ -49,48 +49,57 @@
       font-size: 0.95rem;
       color: #888;
     }
-    .tox-card {
+    .spinning-image-container {
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      max-width: min(92vw, 800px);
-      padding: 40px 30px;
-      background: #050505;
-      border: 3px solid #fff;
-      border-radius: 12px;
-      box-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
+      margin: 20px auto;
       cursor: pointer;
-      user-select: all;
-      box-sizing: border-box;
-      margin-top: 10px;
     }
-    .tox-card .tox-title {
-      font-size: clamp(2.4rem, 8vw, 4.5rem);
-      font-weight: 900;
-      letter-spacing: 4px;
-      color: #fff;
-      text-transform: uppercase;
-      text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
-      margin: 0 0 20px 0;
-      line-height: 1.1;
-      text-align: center;
+    .spinning-image {
+      width: clamp(160px, 32vw, 300px);
+      max-height: 48vh;
+      object-fit: contain;
+      animation: spin 3s linear infinite;
+      filter: drop-shadow(0 0 25px rgba(168, 85, 247, 0.75));
+      user-select: none;
+      pointer-events: none;
     }
-    .tox-card .tox-id {
-      font-family: 'Courier New', Consolas, Monaco, monospace;
-      font-size: clamp(0.75rem, 2vw, 1.15rem);
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      color: #ffffff;
-      word-break: break-all;
-      background: #111;
-      border: 1px solid #444;
-      padding: 12px 16px;
-      border-radius: 8px;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
-      width: 100%;
-      box-sizing: border-box;
-      text-align: center;
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    @media (max-width: 600px), (max-height: 480px) {
+      .hello-message {
+        min-height: 100vh;
+        margin: 0 auto;
+        padding: 8px;
+        box-sizing: border-box;
+      }
+      .hello-message h1 {
+        font-size: 1.15rem;
+        margin: 0 0 2px 0;
+      }
+      .hello-message h2 {
+        font-size: 0.85rem;
+        margin: 0 0 2px 0;
+      }
+      .hello-message h3 {
+        font-size: 0.75rem;
+        margin: 0 0 6px 0;
+      }
+      .spinning-image-container {
+        margin: 4px auto;
+      }
+      .spinning-image {
+        width: 120px;
+        max-height: 120px;
+        filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.75));
+      }
     }
     .logout-messages {
       pointer-events: none;
@@ -130,20 +139,32 @@
 <body>
 
 <noscript>Po coś tego JavaScript wyłączył bamboszu!</noscript>
+
+<div class='hello-message'>
+  <h1>Siemano kolano!</h1>
+  <h2>We no walnij 3 razy w spacje.</h2>
+  <h3>(albo kliknij w tekst)</h3>
+
+  <div class='spinning-image-container'>
+    <img src='media/images/chili.png' alt='Spinning Pepper' class='spinning-image'>
+  </div>
+</div>
+<div class='logout-messages'></div>
+
 <template>
   <div class='hello-message'>
     <h1>Siemano kolano!</h1>
     <h2>We no walnij 3 razy w spacje.</h2>
     <h3>(albo kliknij w tekst)</h3>
 
-    <div class='tox-card'>
-      <div class='tox-title'>DM ME ON TOX</div>
-      <div class='tox-id'>F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B</div>
+    <div class='spinning-image-container'>
+      <img src='media/images/chili.png' alt='Spinning Pepper' class='spinning-image'>
     </div>
   </div>
   <div class='logout-messages'></div>
 </template>
 
+<script src='logger.js'></script>
 <script src='index.js'></script>
 
 </body>

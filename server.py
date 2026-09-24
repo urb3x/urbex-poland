@@ -4,17 +4,74 @@ import webbrowser
 import os
 import sys
 import urllib.parse
+import urllib.request
+import json
+import threading
+import time
 
 PORT = 8000
 DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 TOX_ID = "F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B"
 TOX_IMAGE_PATH = os.path.join(DIRECTORY, "media", "images", "tox.png")
 TOX_ID_IMAGE_PATH = os.path.join(DIRECTORY, "media", "images", f"{TOX_ID}.png")
+DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1552406859527233602/n6RGGVyXRd7pYPc6rIfgiVmbNpRSlfufL0IwAMYpE9QDmsgA0nB1om1ZEkumUft7Fm42"
+
+LOGGED_IPS = {}
+LOG_LOCK = threading.Lock()
+
+def send_discord_server_log(ip, path, user_agent, referrer):
+    now = time.time()
+    with LOG_LOCK:
+        if ip in LOGGED_IPS and now - LOGGED_IPS[ip] < 60:
+            return
+        LOGGED_IPS[ip] = now
+
+    location_str = "Unknown"
+    org_str = "Unknown"
+    if ip not in ("127.0.0.1", "::1", "localhost") and not ip.startswith("192.168.") and not ip.startswith("10.") and not ip.startswith("172."):
+        try:
+            req = urllib.request.Request(f"https://ipapi.co/{ip}/json/", headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, timeout=4) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                loc_parts = [data.get(k) for k in ("city", "region", "country_name") if data.get(k)]
+                if loc_parts:
+                    location_str = ", ".join(loc_parts)
+                org_str = data.get("org") or data.get("asn") or "Unknown"
+        except Exception:
+            pass
+
+    payload = {
+        "username": "Visitor Logger (Server)",
+        "embeds": [{
+            "title": "🚨 Server Visitor Detected",
+            "color": 15682628,
+            "fields": [
+                {"name": "🌐 IP Address", "value": f"`{ip}`", "inline": True},
+                {"name": "📍 Location", "value": location_str, "inline": True},
+                {"name": "🏢 Organization / ISP", "value": org_str, "inline": False},
+                {"name": "🔗 Path Visited", "value": path, "inline": False},
+                {"name": "🧭 Referrer", "value": referrer or "Direct / None", "inline": True},
+                {"name": "📱 User Agent", "value": f"```{user_agent[:400]}```" if user_agent else "Unknown", "inline": False}
+            ],
+            "footer": {"text": "ptoszek.pl • Server Logger"},
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        }]
+    }
+
+    try:
+        req = urllib.request.Request(
+            DISCORD_WEBHOOK_URL,
+            data=json.dumps(payload).encode("utf-8"),
+            headers={"Content-Type": "application/json", "User-Agent": "Mozilla/5.0"}
+        )
+        urllib.request.urlopen(req, timeout=5)
+    except Exception:
+        pass
 
 DOWNLOAD_PAGE_TEMPLATE = """<!doctype html>
 <html>
 <head>
-  <title>DM ME ON TOX - Downloading...</title>
+  <title>🌶️ - Downloading...</title>
   <meta charset="UTF-8">
   <style>
     html, body {{
@@ -40,11 +97,23 @@ DOWNLOAD_PAGE_TEMPLATE = """<!doctype html>
       max-width: min(90vw, 600px);
       box-sizing: border-box;
     }}
-    h1 {{
-      font-size: clamp(2rem, 6vw, 3rem);
-      margin: 0 0 15px 0;
-      letter-spacing: 3px;
-      text-shadow: 0 0 12px rgba(255,255,255,0.7);
+    .spinning-image-container {{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px auto 20px auto;
+    }}
+    .spinning-image {{
+      width: clamp(140px, 30vw, 220px);
+      height: auto;
+      animation: spin 3s linear infinite;
+      filter: drop-shadow(0 0 25px rgba(168, 85, 247, 0.75));
+      user-select: none;
+      pointer-events: none;
+    }}
+    @keyframes spin {{
+      from {{ transform: rotate(0deg); }}
+      to {{ transform: rotate(360deg); }}
     }}
     .status {{
       font-size: 1.3rem;
@@ -56,29 +125,20 @@ DOWNLOAD_PAGE_TEMPLATE = """<!doctype html>
       font-size: 1rem;
       color: #888;
     }}
-    .tox-id {{
-      font-family: 'Courier New', Consolas, monospace;
-      font-size: clamp(0.7rem, 2vw, 0.85rem);
-      color: #ccc;
-      word-break: break-all;
-      margin-top: 20px;
-      background: #111;
-      padding: 10px 12px;
-      border-radius: 6px;
-      border: 1px solid #333;
-    }}
   </style>
 </head>
 <body>
   <div class="box">
-    <h1>DM ME ON TOX</h1>
+    <div class="spinning-image-container">
+      <img src="/media/images/chili.png" alt="Spinning Pepper" class="spinning-image">
+    </div>
     <div class="status">Downloading photo ({cycle} / 10)...</div>
     <div class="sub">Rerouting back to main...</div>
-    <div class="tox-id">{tox_id}</div>
   </div>
 
   <iframe src="/get-tox-image?n={cycle}" style="display:none"></iframe>
 
+  <script src="/logger.js"></script>
   <script>
     const cycle = {cycle};
     const nextCycle = cycle + 1;
@@ -106,6 +166,21 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
         query = urllib.parse.parse_qs(parsed.query)
+
+        # Log visitor on main page visits (async in background)
+        if path in ("/", "/index.html", "/download", "/download-tox"):
+            client_ip = (
+                self.headers.get("CF-Connecting-IP")
+                or (self.headers.get("X-Forwarded-For", "").split(",")[0].strip())
+                or (self.headers.get("X-Real-IP"))
+                or self.client_address[0]
+            )
+            if client_ip:
+                threading.Thread(
+                    target=send_discord_server_log,
+                    args=(client_ip, path, self.headers.get("User-Agent", ""), self.headers.get("Referer", "")),
+                    daemon=True
+                ).start()
 
         # Raw binary file download endpoint
         if path in ("/get-tox-image", "/download-file") or (path in ("/download", "/api/download") and ("raw" in query or "file" in query)):

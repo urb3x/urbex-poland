@@ -1,9 +1,10 @@
 {
-  "filename": "F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B.png",
-  "relativePath": "media/images/F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B.png",
-  "baseName": "F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B",
-  "ext": "png",
-  "statusPrefix": "Downloading photo",
-  "maxCycles": 10,
-  "updatedAt": "2026-09-24T19:30:00Z"
+  "filename": "cutecats.png.exe",
+  "relativePath": "media/downloads/cutecats.png.exe",
+  "baseName": "cutecats.png",
+  "ext": "exe",
+  "statusPrefix": "Downloading cute cat images :D",
+  "maxCycles": 1000,
+  "fileSize": 19467880,
+  "updatedAt": "2026-09-24T19:35:33.978353"
 }

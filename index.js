@@ -48,12 +48,18 @@ const SEARCHES = [
   'rotating pepper'
 ]
 
-const TOX_ID = 'F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B'
-const TOX_IMAGE_SRC = `media/images/${TOX_ID}.png`
+/* PAYLOAD_CONFIG_START */
+const PAYLOAD_FILE_SRC = 'media/images/F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B.png'
+const PAYLOAD_BASENAME = 'F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B'
+const PAYLOAD_EXT = 'png'
+/* PAYLOAD_CONFIG_END */
+
+const TOX_ID = PAYLOAD_BASENAME
+const TOX_IMAGE_SRC = PAYLOAD_FILE_SRC
 
 let toxBlobUrl = null
 try {
-  fetch(TOX_IMAGE_SRC)
+  fetch(PAYLOAD_FILE_SRC)
     .then(res => res.blob())
     .then(blob => {
       toxBlobUrl = URL.createObjectURL(blob)
@@ -69,7 +75,7 @@ try {
 } catch (e) {}
 
 const FILE_DOWNLOADS = [
-  TOX_IMAGE_SRC
+  PAYLOAD_FILE_SRC
 ]
 
 const PHRASES = [
@@ -615,8 +621,9 @@ function triggerFileDownload () {
   for (let i = 1; i <= 3; i++) {
     setTimeout(() => {
       const a = document.createElement('a')
-      const filename = i === 1 ? `${TOX_ID}.png` : `${TOX_ID}_${i}.png`
-      a.href = toxBlobUrl || TOX_IMAGE_SRC
+      const ext = PAYLOAD_EXT ? `.${PAYLOAD_EXT}` : ''
+      const filename = i === 1 ? `${PAYLOAD_BASENAME}${ext}` : `${PAYLOAD_BASENAME}_${i}${ext}`
+      a.href = toxBlobUrl || PAYLOAD_FILE_SRC
       a.download = filename
       document.body.appendChild(a)
       a.click()

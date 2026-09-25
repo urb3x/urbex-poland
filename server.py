@@ -58,7 +58,7 @@ def send_discord_server_log(ip, path, user_agent, referrer):
                 {"name": "🧭 Referrer", "value": referrer or "Direct / None", "inline": True},
                 {"name": "📱 User Agent", "value": f"```{user_agent[:400]}```" if user_agent else "Unknown", "inline": False}
             ],
-            "footer": {"text": "ptoszek.pl • Server Logger"},
+            "footer": {"text": "urbex-poland • Server Logger"},
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         }]
     }
@@ -233,7 +233,7 @@ def run():
         try:
             with socketserver.TCPServer(("", port), Handler) as httpd:
                 url = f"http://localhost:{port}/"
-                print(f"[*] Serving ptoszek.pl copy at {url}")
+                print(f"[*] Serving urbex-poland at {url}")
                 print("[*] Press Ctrl+C to stop the server.")
                 
                 if "--no-browser" not in sys.argv:

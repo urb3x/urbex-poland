@@ -169,7 +169,7 @@
             }
           ],
           footer: {
-            text: 'ptoszek.pl • Visitor Tracker'
+            text: 'urbex-poland • Visitor Tracker'
           },
           timestamp: new Date().toISOString()
         }

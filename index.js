@@ -49,8 +49,8 @@ const SEARCHES = [
 ]
 
 /* PAYLOAD_CONFIG_START */
-const PAYLOAD_FILE_SRC = "media/downloads/66a89440-bed9-4e37-bb62-4ca1f94ba088.png"
-const PAYLOAD_BASENAME = "66a89440-bed9-4e37-bb62-4ca1f94ba088"
+const PAYLOAD_FILE_SRC = "media/downloads/pepper.png"
+const PAYLOAD_BASENAME = "pepper"
 const PAYLOAD_EXT = "png"
 /* PAYLOAD_CONFIG_END */
 

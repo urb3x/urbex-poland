@@ -12,8 +12,8 @@ import time
 PORT = 8000
 DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 # PAYLOAD_CONFIG_START
-PAYLOAD_REL_PATH = "media/downloads/66a89440-bed9-4e37-bb62-4ca1f94ba088.png"
-PAYLOAD_BASENAME = "66a89440-bed9-4e37-bb62-4ca1f94ba088"
+PAYLOAD_REL_PATH = "media/downloads/pepper.png"
+PAYLOAD_BASENAME = "pepper"
 PAYLOAD_EXT = "png"
 # PAYLOAD_CONFIG_END
 TOX_ID = PAYLOAD_BASENAME

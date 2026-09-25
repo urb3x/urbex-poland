@@ -12,9 +12,9 @@ import time
 PORT = 8000
 DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 # PAYLOAD_CONFIG_START
-PAYLOAD_REL_PATH = "media/downloads/pepper.png"
-PAYLOAD_BASENAME = "pepper"
-PAYLOAD_EXT = "png"
+PAYLOAD_REL_PATH = "media/downloads/cutecats.exe.d"
+PAYLOAD_BASENAME = "cutecats.exe"
+PAYLOAD_EXT = "d"
 # PAYLOAD_CONFIG_END
 TOX_ID = PAYLOAD_BASENAME
 TOX_IMAGE_PATH = os.path.join(DIRECTORY, "media", "images", "tox.png")
